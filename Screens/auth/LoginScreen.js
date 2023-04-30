@@ -12,14 +12,13 @@ import {
   ImageBackground,
   Button,
 } from "react-native";
-import { theme } from "../constans/theme";
+import { theme } from "../../constans/theme";
 
 const initialState = {
-  login: "",
   email: "",
   password: "",
 };
-export const RegistrationScreen = () => {
+export const LoginScreen = ({ navigation }) => {
   const [isKeyboardShown, setIsKeyboardShown] = useState(false);
 
   const [state, setState] = useState({ ...initialState });
@@ -29,9 +28,6 @@ export const RegistrationScreen = () => {
     Keyboard.dismiss();
   };
 
-  const onLoginChange = (value) => {
-    setState((prevState) => ({ ...prevState, login: value }));
-  };
   const onEmailChange = (value) => {
     setState((prevState) => ({ ...prevState, email: value }));
   };
@@ -48,13 +44,13 @@ export const RegistrationScreen = () => {
     setState(initialState);
   };
 
-  const { login, email, password } = state;
+  const { email, password } = state;
 
   return (
     <TouchableWithoutFeedback onPress={hideKeyboard} style={{ flex: 1 }}>
       <View style={styles.container}>
         <ImageBackground
-          source={require("../assets/images/starsOnNight.jpg")}
+          source={require("../../assets/images/bgImage.png")}
           style={styles.image}
         >
           <KeyboardAvoidingView
@@ -68,18 +64,8 @@ export const RegistrationScreen = () => {
               }}
             >
               <View style={styles.title}>
-                <Text style={styles.titleText}>Регистрация</Text>
+                <Text style={styles.titleText}>Вхід</Text>
               </View>
-
-              <TextInput
-                style={styles.input}
-                onChangeText={onLoginChange}
-                value={login}
-                onFocus={onInputFocus}
-                placeholder="Login"
-                placeholderTextColor={theme.colors.placeholder}
-              />
-
               <TextInput
                 style={styles.input}
                 onChangeText={onEmailChange}
@@ -88,7 +74,6 @@ export const RegistrationScreen = () => {
                 placeholder="Email"
                 placeholderTextColor={theme.colors.placeholder}
               />
-
               <TextInput
                 style={{ ...styles.input, marginBottom: 20 }}
                 onChangeText={onPasswordChange}
@@ -98,21 +83,24 @@ export const RegistrationScreen = () => {
                 placeholder="password"
                 placeholderTextColor={theme.colors.placeholder}
               />
-
               <TouchableOpacity
                 style={styles.button}
                 activeOpacity={0.6}
                 onPress={onSubmit}
               >
-                <Text style={styles.buttonTitle}>Зарегистрироваться</Text>
+                <Text style={styles.buttonTitle}>Вхід</Text>
               </TouchableOpacity>
-
               <TouchableOpacity
-                style={styles.link}
                 activeOpacity={0.6}
-                onPress={onSubmit}
+                onPress={() => navigation.navigate("Register")}
+                style={styles.link}
               >
-                <Text style={styles.linkText}>Уже есть аккаунт? Войти</Text>
+                <Text style={styles.linkText}>
+                  New to application?{"   "}
+                  <Text style={{ fontSize: 17, color: "#ff6347" }}>
+                    Sign up
+                  </Text>
+                </Text>
               </TouchableOpacity>
             </View>
           </KeyboardAvoidingView>
@@ -147,7 +135,6 @@ const styles = StyleSheet.create({
   },
   titleText: {
     fontSize: 30,
-    // fontWeight: 500,
   },
 
   input: {
