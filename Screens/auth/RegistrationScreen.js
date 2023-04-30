@@ -12,15 +12,15 @@ import {
   ImageBackground,
   Button,
 } from "react-native";
-import { theme } from "../constans/theme";
+import { theme } from "../../constans/theme";
 
 const initialState = {
+  login: "",
   email: "",
   password: "",
 };
-export const LoginScreen = () => {
+export const RegistrationScreen = ({ navigation }) => {
   const [isKeyboardShown, setIsKeyboardShown] = useState(false);
-
   const [state, setState] = useState({ ...initialState });
 
   const hideKeyboard = () => {
@@ -28,6 +28,9 @@ export const LoginScreen = () => {
     Keyboard.dismiss();
   };
 
+  const onLoginChange = (value) => {
+    setState((prevState) => ({ ...prevState, login: value }));
+  };
   const onEmailChange = (value) => {
     setState((prevState) => ({ ...prevState, email: value }));
   };
@@ -44,13 +47,13 @@ export const LoginScreen = () => {
     setState(initialState);
   };
 
-  const { email, password } = state;
+  const { login, email, password } = state;
 
   return (
     <TouchableWithoutFeedback onPress={hideKeyboard} style={{ flex: 1 }}>
       <View style={styles.container}>
         <ImageBackground
-          source={require("../assets/images/bgImage.png")}
+          source={require("../../assets/images/starsOnNight.jpg")}
           style={styles.image}
         >
           <KeyboardAvoidingView
@@ -64,8 +67,17 @@ export const LoginScreen = () => {
               }}
             >
               <View style={styles.title}>
-                <Text style={styles.titleText}>Вхід</Text>
+                <Text style={styles.titleText}>Регистрация</Text>
               </View>
+
+              <TextInput
+                style={styles.input}
+                onChangeText={onLoginChange}
+                value={login}
+                onFocus={onInputFocus}
+                placeholder="Login"
+                placeholderTextColor={theme.colors.placeholder}
+              />
 
               <TextInput
                 style={styles.input}
@@ -91,16 +103,19 @@ export const LoginScreen = () => {
                 activeOpacity={0.6}
                 onPress={onSubmit}
               >
-                <Text style={styles.buttonTitle}>Вхід</Text>
+                <Text style={styles.buttonTitle}>Зарегистрироваться</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
-                style={styles.link}
                 activeOpacity={0.6}
-                onPress={onSubmit}
+                onPress={() => navigation.navigate("Login")}
+                style={styles.link}
               >
                 <Text style={styles.linkText}>
-                  Не має аккаунта? Зареєструватися
+                  New to application?{"   "}
+                  <Text style={{ fontSize: 17, color: "#ff6347" }}>
+                    Sign In
+                  </Text>
                 </Text>
               </TouchableOpacity>
             </View>
@@ -136,6 +151,7 @@ const styles = StyleSheet.create({
   },
   titleText: {
     fontSize: 30,
+    // fontWeight: 500,
   },
 
   input: {
