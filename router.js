@@ -2,7 +2,7 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-//icons import
+//icons import react
 import { MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
 
 const AuthStack = createStackNavigator();
