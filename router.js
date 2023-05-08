@@ -35,8 +35,11 @@ export const useRoute = (isAuth) => {
       </AuthStack.Navigator>
     );
   }
+
+  //tabBarOptions
+  // screenOptions
   return (
-    <MainTab.Navigator tabBarOptions={{ showLabel: false }}>
+    <MainTab.Navigator screenOptions={{ showLabel: false }}>
       <MainTab.Screen
         options={{
           headerShown: false,
@@ -53,6 +56,7 @@ export const useRoute = (isAuth) => {
         name="Posts"
         component={PostScreen}
       />
+
       <MainTab.Screen
         options={{
           headerShown: false,
