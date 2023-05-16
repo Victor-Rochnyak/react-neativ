@@ -1,54 +1,19 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, FlatList, Image } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import React from "react";
+import { moduleName } from "react-native";
+import { createStackNavigator } from "@react-navigation/stack";
+import DefaultScreen from "../nestedScreens/DefaultScreen";
+import CommentsScreen from "../nestedScreens/CommentsScreen";
+import MapScreen from "../nestedScreens/MapScreen";
 
-const PostScreen = ({ route }) => {
-  const [posts, setPosts] = useState([]);
-  console.log("params", route.params);
+const NestedScreen = createStackNavigator();
 
-  useEffect(() => {
-    if (route.params) {
-      setPosts((prevState) => [...prevState, route.params]);
-    }
-  }, [route.params]);
-  console.log("posts", posts);
-
+const PostScreen = () => {
   return (
-    <View style={styles.container}>
-      <FlatList
-        data={posts}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) => (
-          <View
-            style={{
-              marginBottom: 10,
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Image
-              source={{ uri: item.photo }}
-              style={{ width: 350, height: 200 }}
-            ></Image>
-          </View>
-        )}
-      />
-      <TouchableOpacity
-        onPress={() => navigation.navigate("Login")}
-        style={{ marginRight: 10 }}
-      >
-        {/* <MaterialCommunityIcons name="logout" size={24} color="black" /> */}
-      </TouchableOpacity>
-    </View>
+    <NestedScreen.Navigator>
+      <NestedScreen.Screen name="DefaultScreen" component={DefaultScreen} />
+      <NestedScreen.Screen name="Comments" component={CommentsScreen} />
+      <NestedScreen.Screen name="Map" component={MapScreen} />
+    </NestedScreen.Navigator>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-  },
-});
-
 export default PostScreen;
