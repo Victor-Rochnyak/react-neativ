@@ -1,18 +1,24 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { Camera } from "expo-camera";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import * as Location from "expo-location";
 
-const CreateScreen = () => {
+const CreateScreen = ({ navigation }) => {
   const [camera, setCamera] = useState(null);
   const [photo, setPhoto] = useState("");
 
   const takePhoto = async () => {
     const photo = await camera.takePictureAsync();
+    const location = await Location.getCurrentPositionAsync();
+    console.log("location", location);
     console.log("camera", photo.uri);
     setPhoto(photo.uri);
   };
 
+  const sendPhoto = () => {
+    console.log("navigation", navigation);
+    navigation.navigate("Posts", { photo });
+  };
   return (
     <View style={styles.container}>
       <Camera style={styles.camera} ref={setCamera}>
@@ -20,7 +26,7 @@ const CreateScreen = () => {
           <View style={styles.takePhotoContainer}>
             <Image
               source={{ uri: photo }}
-              style={{ height: 200, width: 200 }}
+              style={{ height: 200, width: 150, borderRadius: 10 }}
             />
           </View>
         )}
@@ -28,6 +34,9 @@ const CreateScreen = () => {
           <Text style={styles.snap}>snap</Text>
         </TouchableOpacity>
       </Camera>
+      <TouchableOpacity onPress={sendPhoto} style={styles.sendBtn}>
+        <Text style={styles.sendTitle}>Send</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -37,7 +46,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   camera: {
-    flex: 1,
+    height: "80%",
+    // flex: 1,
     // height: 300,
     // marginTop: 50,
     alignItems: "center",
@@ -58,11 +68,26 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   takePhotoContainer: {
+    borderRadius: 10,
     position: "absolute",
     top: 50,
     left: 10,
     borderColor: "#fff",
     borderWidth: 1,
+  },
+  sendBtn: {
+    marginHorizontal: 30,
+    height: 40,
+    borderWidth: 2,
+    borderColor: "#20b2aa",
+    borderRadius: 10,
+    marginTop: 20,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  sendTitle: {
+    color: "#2ba2aa",
+    fontSize: 20,
   },
 });
 export default CreateScreen;
